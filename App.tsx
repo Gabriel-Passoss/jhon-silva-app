@@ -14,9 +14,7 @@ export default function App() {
   return (
     <NativeBaseProvider>
       <AuthProvider>
-        <NavigationContainer>
           <AppRoutes />
-        </NavigationContainer>
       </AuthProvider>
     </NativeBaseProvider>
   );

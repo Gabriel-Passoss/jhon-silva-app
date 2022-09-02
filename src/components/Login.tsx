@@ -1,6 +1,12 @@
 import { Box, Button, Center, FormControl, Heading, HStack, Input, Link, VStack, Text, Image, Flex } from "native-base";
+import { useContext } from "react";
 
-export function Login() {
+import { AuthContext } from '../contexts/authContext'
+import { SignInForm } from "./Forms/SignInForm";
+
+export function Login({ navigation }: any) {
+  const { signIn } = useContext(AuthContext)
+
   return (
     <>
       <Flex alignItems="center" justifyContent="center" h="100%">
@@ -19,20 +25,6 @@ export function Login() {
             </Heading>
 
             <VStack space={3} mt="5">
-              <FormControl>
-                <FormControl.Label>Nome</FormControl.Label>
-                <Input />
-              </FormControl>
-              <FormControl>
-                <FormControl.Label>Senha</FormControl.Label>
-                <Input type="password" />
-              </FormControl>
-              <Button mt="1" colorScheme="indigo">
-                Entrar
-              </Button>
-              <Button colorScheme="indigo">
-                Registrar
-              </Button>
             </VStack>
           </Box>
         </Flex>
