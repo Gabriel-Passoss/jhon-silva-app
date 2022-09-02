@@ -1,10 +1,10 @@
 import { Box, Button, Center, FormControl, Heading, HStack, Input, Link, VStack, Text, Image, Flex } from "native-base";
 
-export function Login() {
+export function Register() {
   return (
     <>
       <Flex alignItems="center" justifyContent="center" h="100%">
-        <Image source={require('../assets/logo-img.jpg')} borderRadius="xl" />
+        <Image source={require('../..//assets/logo-img.jpg')} alt="Jhon-Silva logor" borderRadius="xl" />
         <Flex alignItems="center" width="100%">
           <Box p="2" my="8" w="90%" maxW="290">
             <Heading textAlign="center" size="lg" fontWeight="600" color="coolGray.800" _dark={{
@@ -27,8 +27,11 @@ export function Login() {
                 <FormControl.Label>Senha</FormControl.Label>
                 <Input type="password" />
               </FormControl>
-              <Button mt="2" colorScheme="indigo">
+              <Button mt="1" colorScheme="indigo">
                 Entrar
+              </Button>
+              <Button colorScheme="indigo">
+                Registrar
               </Button>
             </VStack>
           </Box>

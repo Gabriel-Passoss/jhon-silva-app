@@ -1,12 +1,23 @@
 import React from "react";
-// 1. import `NativeBaseProvider` component
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { NativeBaseProvider, Text, Box } from "native-base";
-import { Login } from "./components/Login";
+
+import { AppRoutes } from "./src/routes/app.routes";
+import { Login } from "./src/components/Login";
+import { AuthProvider } from "./src/contexts/authContext";
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NativeBaseProvider>
-     <Login />
+      <AuthProvider>
+        <NavigationContainer>
+          <AppRoutes />
+        </NavigationContainer>
+      </AuthProvider>
     </NativeBaseProvider>
   );
 }
