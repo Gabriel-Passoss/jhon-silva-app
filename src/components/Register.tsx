@@ -1,19 +1,20 @@
-import { Box, Button, Center, FormControl, Heading, HStack, Input, Link, VStack, Text, Image, Flex } from "native-base";
+import { Box, Heading, VStack, Image, Flex } from "native-base";
 import { SignInForm } from "./Forms/SignInForm";
 
 export function Register() {
+
   return (
     <>
       <Flex alignItems="center" justifyContent="center" h="100%">
         <Image source={require('../..//assets/logo-img.jpg')} alt="Jhon-Silva logo" borderRadius="xl" />
         <Flex alignItems="center" width="100%">
-          <Box p="2" my="8" w="90%" maxW="290">
+          <Box my="8" w="90%" maxW="290">
             <Heading textAlign="center" size="lg" fontWeight="600" color="coolGray.800" _dark={{color: "warmGray.50"}}>
-              Bem-vindo barbeiro!
+              Bem-vindo barbeiro!💈
             </Heading>
             
             <Heading textAlign="center" mt="1" _dark={{color: "warmGray.200"}} color="coolGray.600" fontWeight="medium" size="xs">
-              Cadastre-se na sua conta
+              Crie sua conta
             </Heading>
 
             <VStack space={3} mt="5">
