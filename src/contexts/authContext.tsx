@@ -41,12 +41,13 @@ export function signOut() {
 export const AuthContext = createContext({} as AuthContextData)
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState()
+  const [user, setUser] = useState({})
   const isAuthenticated = !!user
 
   async function signIn({ name, email, password, service }: SignInCredentials) {
     await createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
       const { user } = userCredential
+      setUser(user)
       const { email, uid } = user
 
       writeUserData({email, uid, name, service})
