@@ -1,5 +1,5 @@
 import { Box, Heading, VStack, Image, Flex } from "native-base";
-import { SignInForm } from "./Forms/SignInForm";
+import { SignInForm } from "../components/Forms/SignInForm";
 
 export function Register() {
 

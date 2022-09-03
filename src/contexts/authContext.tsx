@@ -1,5 +1,5 @@
 import { createContext, useState, ReactNode, useEffect } from 'react'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { auth, database } from '../services/firebase';
 
@@ -17,10 +17,17 @@ type SignInCredentials = {
   service: string,
 }
 
+type LoginCredentials = {
+  email: string,
+  password: string,
+}
+
 type AuthContextData = {
-  signIn(credentials: SignInCredentials): Promise<void>
+  signIn(credentials: SignInCredentials): Promise<void>,
+  login(credentials: LoginCredentials): Promise<void>,
+  signOutUser(): any
   isAuthenticated: boolean
-  user: any
+  user: {}
 }
 
 type AuthProviderProps = {
@@ -35,7 +42,12 @@ function writeUserData({ email, uid, name, service }: User) {
   })
 }
 
-export function signOut() {
+export function signOutUser() {
+  signOut(auth).then(() => {
+    // Sign-out successful.
+  }).catch((error) => {
+    // An error happened.
+  });
 }
 
 export const AuthContext = createContext({} as AuthContextData)
@@ -51,11 +63,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const { email, uid } = user
 
       writeUserData({email, uid, name, service})
+    }).catch((error) => {
+      const errorCode = error.code
+      const errorMessage = error.message
+      console.log(errorCode, errorMessage)
+    })
+  }
+
+  async function login({ email, password }: LoginCredentials) {
+    await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+      const { user } = userCredential
+      setUser(user)
+    }).catch((error) => {
+      const errorCode = error.code
+      const errorMessage = error.message
+      console.log(errorCode, errorMessage)
     })
   }
 
   return (
-    <AuthContext.Provider value={{ signIn, isAuthenticated, user }}>
+    <AuthContext.Provider value={{ signIn, login, signOutUser, isAuthenticated, user }}>
       {children}
     </AuthContext.Provider>
   )

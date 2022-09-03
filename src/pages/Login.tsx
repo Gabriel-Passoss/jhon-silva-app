@@ -1,11 +1,8 @@
 import { Box, Button, Center, FormControl, Heading, HStack, Input, Link, VStack, Text, Image, Flex } from "native-base";
-import { useContext } from "react";
 
-import { AuthContext } from '../contexts/authContext'
-import { SignInForm } from "./Forms/SignInForm";
+import { SignInForm } from "../components/Forms/LoginForm";
 
-export function Login({ navigation }: any) {
-  const { signIn } = useContext(AuthContext)
+export function Login() {
 
   return (
     <>
