@@ -1,8 +1,8 @@
-import { Box, Button, Center, FormControl, Heading, HStack, Input, Link, VStack, Text, Image, Flex } from "native-base";
+import { Box, Heading, VStack, Text, Image, Flex, Alert } from "native-base";
 
-import { SignInForm } from "../components/Forms/LoginForm";
+import { LoginForm } from "../components/Forms/LoginForm";
 
-export function Login() {
+export function Login({navigation}) {
 
   return (
     <>
@@ -22,6 +22,7 @@ export function Login() {
             </Heading>
 
             <VStack space={3} mt="5">
+              <LoginForm navigation={navigation} />
             </VStack>
           </Box>
         </Flex>

@@ -18,13 +18,13 @@ type FormData = {
 export function SignInForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [service, setService] = useState("barber")
-  const { signIn } = useContext(AuthContext)
+  const { handleSignIn } = useContext(AuthContext)
   const { control, handleSubmit } = useForm<FormData>()
 
   const onSubmit = async (data: FormData) => {
     const { name, email, password } = data
     setIsLoading(true)
-    await signIn({ name, email, password, service })
+    await handleSignIn({ name, email, password, service })
   }
 
   return (

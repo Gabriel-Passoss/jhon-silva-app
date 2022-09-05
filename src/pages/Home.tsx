@@ -4,12 +4,12 @@ import { Box, Flex, VStack, HStack, Text, Avatar, Button, Image } from 'native-b
 import { AuthContext } from '../contexts/authContext'
 
 export function Home() {
-  const { signOutUser } = useContext(AuthContext)
+  const { handleSignOutUser } = useContext(AuthContext)
 
   return (
     <Flex bg="#6E1821" h="100%">
       <HStack h="15%" justifyContent="center" alignItems="center" space={5}  mt="25px">
-        <Button bg="gray.800" h="40px" w="80px" onPress={signOutUser}>
+        <Button bg="gray.800" h="40px" w="80px" onPress={handleSignOutUser}>
           Sair
         </Button>
         <Image source={require('../../assets/logo-img.jpg')} alt="jhon silva logo"/>
