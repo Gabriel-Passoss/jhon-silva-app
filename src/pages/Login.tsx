@@ -1,4 +1,5 @@
 import { Box, Heading, VStack, Text, Image, Flex, Alert } from "native-base";
+import { StatusBar } from 'expo-status-bar'
 
 import { LoginForm } from "../components/Forms/LoginForm";
 
@@ -6,6 +7,7 @@ export function Login({navigation}) {
 
   return (
     <>
+      <StatusBar style="dark"/>
       <Flex alignItems="center" justifyContent="center" h="100%">
         <Image source={require('../../assets/logo-img.jpg')} alt="Jhon-Silva logor" borderRadius="xl" />
         <Flex alignItems="center" width="100%">

@@ -1,5 +1,5 @@
 import { createContext, useState, ReactNode, useEffect } from 'react'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, inMemoryPersistence, signOut, onAuthStateChanged } from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { database } from '../services/firebase';
 
@@ -43,14 +43,14 @@ const auth = getAuth()
 export const AuthContext = createContext({} as AuthContextData)
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [ isLoading, setIsLoading ] = useState(false)
-  const [ error, setError ] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("")
   const [user, setUser] = useState(null)
   const isAuthenticated = !!user
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-        setUser(user)
+      setUser(user)
     })
   }, [])
 
@@ -80,22 +80,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   //Logar na conta
   async function handleLogIn({ email, password }: LoginCredentials) {
-    await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
-      setIsLoading(true)
-    }).catch((error) => {
-      if (error.code === "auth/wrong-password") {
-        setError("Senha incorreta, tente novamente")
-      } else if (error.code === "auth/too-many-requests") {
-        setError("Muitas tentativas, aguarde 15 segundos")
-      } else if (error.code === "auth/missing-email") {
-        setError("Email não inserido")
-      } else if (error.code === "auth/internal-error") {
-        setError("Email/senha não encontrado")
-      } else {
-        setError("Erro desconhecido")
-      }
-      setIsLoading(false)
-      console.log(error.code)
+    setPersistence(auth, inMemoryPersistence).then(async () => {
+      return await signInWithEmailAndPassword(auth, email, password).then(() => {
+        setIsLoading(true)
+      }).catch((error) => {
+        if (error.code === "auth/wrong-password") {
+          setError("Senha incorreta, tente novamente")
+        } else if (error.code === "auth/too-many-requests") {
+          setError("Muitas tentativas, aguarde 15 segundos")
+        } else if (error.code === "auth/missing-email") {
+          setError("Email não inserido")
+        } else if (error.code === "auth/internal-error") {
+          setError("Email/senha não encontrado")
+        } else if (error.code === "auth/user-not-found") {
+          setError("Usuário não encontrado")
+        } else {
+          setError("Erro desconhecido")
+        }
+        setIsLoading(false)
+        console.log(error.code)
+      })
     })
   }
 
@@ -107,6 +111,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setUser(null)
     })
   }
+
+  //Acessar dados da conta
+  
 
   return (
     <AuthContext.Provider value={{ handleSignIn, handleLogIn, handleSignOutUser, isAuthenticated, isLoading, setIsLoading, user, error }}>

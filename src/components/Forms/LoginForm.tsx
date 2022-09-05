@@ -50,7 +50,7 @@ export function LoginForm({ navigation }) {
             name="password"
             rules={{
               required: true,
-              minLength: 10,
+              minLength: 5,
             }}
             render={({ field: { value, onChange } }) => (
               <Input InputLeftElement={<Icon as={<Ionicons name="key-outline" />} size={6} ml="2" />} fontSize="md" value={value} onChangeText={onChange} type="password" name="password" placeholder="Senha" />

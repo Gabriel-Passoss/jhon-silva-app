@@ -1,9 +1,9 @@
 import { useContext } from 'react'
-import { Box, Flex, VStack, HStack, Text, Avatar, Button, Image } from 'native-base'
+import { Box, Flex, VStack, HStack, Text, Button, Image } from 'native-base'
 
 import { AuthContext } from '../contexts/authContext'
 
-export function Home() {
+export function Barber() {
   const { handleSignOutUser } = useContext(AuthContext)
 
   return (

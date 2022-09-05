@@ -10,11 +10,11 @@ export function Register() {
         <Flex alignItems="center" width="100%">
           <Box my="8" w="90%" maxW="290">
             <Heading textAlign="center" size="lg" fontWeight="600" color="coolGray.800" _dark={{color: "warmGray.50"}}>
-              Bem-vindo barbeiro!💈
+              Bem-vindo barbeiro!
             </Heading>
             
             <Heading textAlign="center" mt="1" _dark={{color: "warmGray.200"}} color="coolGray.600" fontWeight="medium" size="xs">
-              Crie sua conta
+              Crie sua conta para começar
             </Heading>
 
             <VStack space={3} mt="5">
