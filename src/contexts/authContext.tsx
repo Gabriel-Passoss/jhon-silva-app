@@ -1,8 +1,7 @@
 import { createContext, useState, ReactNode, useEffect } from 'react'
-import * as SecureStore from 'expo-secure-store';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 import { ref, set } from "firebase/database";
-import { auth, database } from '../services/firebase';
+import { database } from '../services/firebase';
 
 type User = {
   name: string,
@@ -28,6 +27,8 @@ type AuthContextData = {
   handleLogIn(credentials: LoginCredentials): Promise<void>,
   handleSignOutUser(): any,
   isAuthenticated: boolean,
+  isLoading: boolean,
+  setIsLoading: any,
   user: {},
   error: string,
 }
@@ -36,10 +37,13 @@ type AuthProviderProps = {
   children: ReactNode
 }
 
+const auth = getAuth()
+
 
 export const AuthContext = createContext({} as AuthContextData)
 
 export function AuthProvider({ children }: AuthProviderProps) {
+  const [ isLoading, setIsLoading ] = useState(false)
   const [ error, setError ] = useState("")
   const [user, setUser] = useState(null)
   const isAuthenticated = !!user
@@ -77,24 +81,37 @@ export function AuthProvider({ children }: AuthProviderProps) {
   //Logar na conta
   async function handleLogIn({ email, password }: LoginCredentials) {
     await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
-      console.log("Entrou aqui")
+      setIsLoading(true)
     }).catch((error) => {
-      setError(error.code)
-      const errorCode = error.code
-      console.log(errorCode)
+      if (error.code === "auth/wrong-password") {
+        setError("Senha incorreta, tente novamente")
+      } else if (error.code === "auth/too-many-requests") {
+        setError("Muitas tentativas, aguarde 15 segundos")
+      } else if (error.code === "auth/missing-email") {
+        setError("Email não inserido")
+      } else if (error.code === "auth/internal-error") {
+        setError("Email/senha não encontrado")
+      } else {
+        setError("Erro desconhecido")
+      }
+      setIsLoading(false)
+      console.log(error.code)
     })
   }
 
   //Deslogar da conta
   async function handleSignOutUser() {
     await signOut(auth).then(() => {
+      setError(null)
+      setIsLoading(false)
       setUser(null)
     })
   }
 
   return (
-    <AuthContext.Provider value={{ handleSignIn, handleLogIn, handleSignOutUser, isAuthenticated, user, error }}>
+    <AuthContext.Provider value={{ handleSignIn, handleLogIn, handleSignOutUser, isAuthenticated, isLoading, setIsLoading, user, error }}>
       {children}
     </AuthContext.Provider>
   )
+
 }

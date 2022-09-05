@@ -34,6 +34,10 @@ export function SignInForm() {
         <Controller
           control={control}
           name="name"
+          rules={{
+            required: true,
+            minLength: 5,
+          }}
           render={({ field: { value, onChange }}) => (
             <Input InputLeftElement={<Icon as={<Feather name="user" />} size={6} ml="2" />} fontSize="md" value={value} onChangeText={onChange} type="name" name="name" placeholder="Jhon Doe" />
           )}
@@ -45,6 +49,10 @@ export function SignInForm() {
         <Controller
           control={control}
           name="email"
+          rules={{
+            required: true,
+            minLength: 15,
+          }}
           render={({ field: { value, onChange }}) => (
             <Input InputLeftElement={<Icon as={<MaterialCommunityIcons name="email-open-outline" />} size={6} ml="2" />} fontSize="md" value={value} onChangeText={onChange} type="email" name="email" placeholder="jhondoe@email.com" />
           )}
@@ -56,6 +64,10 @@ export function SignInForm() {
         <Controller
           control={control}
           name="password"
+          rules={{
+            required: true,
+            minLength: 10,
+          }}
           render={({ field: { value, onChange }}) => (
             <Input InputLeftElement={<Icon as={<Ionicons name="key-outline" />} size={6} ml="2" />} fontSize="md" value={value} onChangeText={onChange} type="password" name="password" placeholder="Senha" />
           )}
