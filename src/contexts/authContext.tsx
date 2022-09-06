@@ -1,6 +1,6 @@
 import { createContext, useState, ReactNode, useEffect } from 'react'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, inMemoryPersistence, signOut, onAuthStateChanged } from "firebase/auth";
-import { ref, set } from "firebase/database";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, signOut, browserLocalPersistence, inMemoryPersistence } from "firebase/auth";
+import { ref, child, get, set } from "firebase/database";
 import { database } from '../services/firebase';
 
 type User = {
@@ -29,16 +29,21 @@ type AuthContextData = {
   isAuthenticated: boolean,
   isLoading: boolean,
   setIsLoading: any,
-  user: {},
   error: string,
+  user: {
+    email: string,
+    service: string,
+    username: string,
+    photo?: string
+  }
 }
 
 type AuthProviderProps = {
   children: ReactNode
 }
 
+const dbRef = ref(database)
 const auth = getAuth()
-
 
 export const AuthContext = createContext({} as AuthContextData)
 
@@ -47,12 +52,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [error, setError] = useState("")
   const [user, setUser] = useState(null)
   const isAuthenticated = !!user
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      setUser(user)
-    })
-  }, [])
 
   //Cadastrar dados no banco de dados
   async function writeUserData({ email, uid, name, service }: User) {
@@ -81,7 +80,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   //Logar na conta
   async function handleLogIn({ email, password }: LoginCredentials) {
     setPersistence(auth, inMemoryPersistence).then(async () => {
-      return await signInWithEmailAndPassword(auth, email, password).then(() => {
+      return await signInWithEmailAndPassword(auth, email, password).then((user) => {
+        get(child(dbRef, `users/${user.user.uid}`)).then(async (snapshot) => {
+          if (snapshot.exists()) {
+            setUser(snapshot.val())
+          } else {
+            console.log("Sem dados disponíveis")
+          }
+        })
         setIsLoading(true)
       }).catch((error) => {
         if (error.code === "auth/wrong-password") {
@@ -112,11 +118,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     })
   }
 
-  //Acessar dados da conta
-  
-
   return (
-    <AuthContext.Provider value={{ handleSignIn, handleLogIn, handleSignOutUser, isAuthenticated, isLoading, setIsLoading, user, error }}>
+    <AuthContext.Provider value={{ handleSignIn, handleLogIn, handleSignOutUser, user, isAuthenticated, isLoading, setIsLoading, error }}>
       {children}
     </AuthContext.Provider>
   )

@@ -7,23 +7,25 @@ import { AuthContext } from '../contexts/authContext';
 import { Login } from '../pages/Login'
 import { Register } from '../pages/Register'
 import { Barber } from '../pages/Barber';
+import { FrontDesk } from '../pages/FrontDesk';
 
 const Stack = createNativeStackNavigator()
 
 export function AppRoutes() {
-  const { isAuthenticated } = useContext(AuthContext)
+  const { isAuthenticated , user} = useContext(AuthContext)
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isAuthenticated ? (
-          // No token found, user isn't signed in
-            <Stack.Screen name="Home" component={Barber} />
+          user.service === "barber" ?
+            <Stack.Screen name="Barber" component={Barber} />
+            :
+            <Stack.Screen name="FrontDesk" component={FrontDesk} />
         ) : (
-          // User is signed in
           <>
-          <Stack.Screen name="Login" component={Login}/>
-          <Stack.Screen name="Register" component={Register}/>
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
           </>
         )}
       </Stack.Navigator>
