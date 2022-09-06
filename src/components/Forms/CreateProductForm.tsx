@@ -3,7 +3,6 @@ import { useForm, Controller } from 'react-hook-form'
 import * as ImagePicker from 'expo-image-picker';
 import { Button, Flex, FormControl, Icon, Input, Modal } from "native-base";
 
-import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -21,20 +20,13 @@ export function CreateProductForm() {
   const { control, handleSubmit } = useForm<FormData>()
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-      base64: true
-    });
+    let result = await ImagePicker.launchImageLibraryAsync();
 
     if (!result.cancelled) {
       //@ts-ignore
-      setImage(result.base64)
+      setImage(result.uri)
     }
-  };
+  }
 
   function handleCloseModal() {
     setModalVisible(false)
