@@ -1,5 +1,5 @@
 import { createContext, useState, ReactNode, useEffect } from 'react'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, signOut, browserLocalPersistence, inMemoryPersistence } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, signOut, browserLocalPersistence, inMemoryPersistence, onAuthStateChanged } from "firebase/auth";
 import { ref, child, get, set } from "firebase/database";
 import { database } from '../services/firebase';
 
@@ -53,6 +53,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState(null)
   const isAuthenticated = !!user
 
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await get(child(dbRef, `users/${user.uid}`)).then(async (snapshot) => {
+          if (snapshot.exists()) {
+            setUser(snapshot.val())
+          } else {
+            console.log("Sem dados disponíveis")
+          }
+        })
+      }
+    })
+  }, [])
+
   //Cadastrar dados no banco de dados
   async function writeUserData({ email, uid, name, service }: User) {
     await set(ref(database, 'users/' + uid), {
@@ -79,34 +93,60 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   //Logar na conta
   async function handleLogIn({ email, password }: LoginCredentials) {
-    setPersistence(auth, inMemoryPersistence).then(async () => {
-      return await signInWithEmailAndPassword(auth, email, password).then((user) => {
-        get(child(dbRef, `users/${user.user.uid}`)).then(async (snapshot) => {
-          if (snapshot.exists()) {
-            setUser(snapshot.val())
-          } else {
-            console.log("Sem dados disponíveis")
-          }
-        })
-        setIsLoading(true)
-      }).catch((error) => {
-        if (error.code === "auth/wrong-password") {
-          setError("Senha incorreta, tente novamente")
-        } else if (error.code === "auth/too-many-requests") {
-          setError("Muitas tentativas, aguarde 15 segundos")
-        } else if (error.code === "auth/missing-email") {
-          setError("Email não inserido")
-        } else if (error.code === "auth/internal-error") {
-          setError("Email/senha não encontrado")
-        } else if (error.code === "auth/user-not-found") {
-          setError("Usuário não encontrado")
+    signInWithEmailAndPassword(auth, email, password).then((user) => {
+      get(child(dbRef, `users/${user.user.uid}`)).then(async (snapshot) => {
+        if (snapshot.exists()) {
+          setUser(snapshot.val())
         } else {
-          setError("Erro desconhecido")
+          console.log("Sem dados disponíveis")
         }
-        setIsLoading(false)
-        console.log(error.code)
       })
+      setIsLoading(true)
+    }).catch((error) => {
+      if (error.code === "auth/wrong-password") {
+        setError("Senha incorreta, tente novamente")
+      } else if (error.code === "auth/too-many-requests") {
+        setError("Muitas tentativas, aguarde 15 segundos")
+      } else if (error.code === "auth/missing-email") {
+        setError("Email não inserido")
+      } else if (error.code === "auth/internal-error") {
+        setError("Email/senha não encontrado")
+      } else if (error.code === "auth/user-not-found") {
+        setError("Usuário não encontrado")
+      } else {
+        setError("Erro desconhecido")
+      }
+      setIsLoading(false)
+      console.log(error.code)
     })
+    // setPersistence(auth, browserLocalPersistence).then(async () => {
+    //   return await signInWithEmailAndPassword(auth, email, password).then((user) => {
+    //     get(child(dbRef, `users/${user.user.uid}`)).then(async (snapshot) => {
+    //       if (snapshot.exists()) {
+    //         setUser(snapshot.val())
+    //       } else {
+    //         console.log("Sem dados disponíveis")
+    //       }
+    //     })
+    //     setIsLoading(true)
+    //   }).catch((error) => {
+    //     if (error.code === "auth/wrong-password") {
+    //       setError("Senha incorreta, tente novamente")
+    //     } else if (error.code === "auth/too-many-requests") {
+    //       setError("Muitas tentativas, aguarde 15 segundos")
+    //     } else if (error.code === "auth/missing-email") {
+    //       setError("Email não inserido")
+    //     } else if (error.code === "auth/internal-error") {
+    //       setError("Email/senha não encontrado")
+    //     } else if (error.code === "auth/user-not-found") {
+    //       setError("Usuário não encontrado")
+    //     } else {
+    //       setError("Erro desconhecido")
+    //     }
+    //     setIsLoading(false)
+    //     console.log(error.code)
+    //   })
+    // })
   }
 
   //Deslogar da conta
