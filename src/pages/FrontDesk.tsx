@@ -1,5 +1,5 @@
-import { useContext, useRef, useState } from 'react'
-import { Flex, VStack, HStack, Text, Button, Image, Modal, FormControl, Input } from 'native-base'
+import { useContext } from 'react'
+import { Flex, VStack, HStack, Text, Button, Image} from 'native-base'
 
 import { AuthContext } from '../contexts/AuthContext'
 import { ProductsContext } from '../contexts/ProductsContext'
@@ -21,10 +21,11 @@ export function FrontDesk() {
         <Text fontSize="2xl" color="coolGray.100">Lista de pedidos</Text>
       </Flex>
       
-      <CreateProductForm />
 
+
+      <CreateProductForm />
       <Flex position="relative" h="65%" justify="flex-end" align="center">
-        <Button position="absolute" bg="#242424" w="40%" borderRadius="5px" onPress={() => {setModalVisible(!modalVisible);}}>
+        <Button position="absolute" bg="#242424" w="40%" borderRadius="5px" onPress={() => { setModalVisible(!modalVisible); }}>
           Novo produto
         </Button>
       </Flex>

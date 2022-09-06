@@ -54,7 +54,7 @@ export function SignInForm() {
             minLength: 15,
           }}
           render={({ field: { value, onChange }}) => (
-            <Input InputLeftElement={<Icon as={<MaterialCommunityIcons name="email-open-outline" />} size={6} ml="2" />} fontSize="md" value={value} onChangeText={onChange} type="email" name="email" placeholder="jhondoe@email.com" />
+            <Input InputLeftElement={<Icon as={<MaterialCommunityIcons name="email-open-outline" />} size={6} ml="2" />} autoCapitalize='none' autoCorrect={false} fontSize="md" value={value} onChangeText={onChange} type="email" name="email" placeholder="jhondoe@email.com" />
           )}
         />
       </FormControl>

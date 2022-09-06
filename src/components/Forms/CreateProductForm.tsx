@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { useForm, Controller } from 'react-hook-form'
+import * as ImagePicker from 'expo-image-picker';
 import { Button, Flex, FormControl, Icon, Input, Modal } from "native-base";
 
 import { Feather } from "@expo/vector-icons";
@@ -11,24 +12,45 @@ import { ProductsContext } from '../../contexts/ProductsContext'
 type FormData = {
   name: string,
   price: string,
-  picture: string,
 }
 
 
 export function CreateProductForm() {
+  const [image, setImage] = useState(null);
   const { isLoading, setIsLoading, modalVisible, setModalVisible, handleCreateProduct } = useContext(ProductsContext)
   const { control, handleSubmit } = useForm<FormData>()
 
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+      base64: true
+    });
+
+    if (!result.cancelled) {
+      //@ts-ignore
+      setImage(result.base64)
+    }
+  };
+
+  function handleCloseModal() {
+    setModalVisible(false)
+    setImage(null)
+  }
+
   const onSubmit = async (data: FormData) => {
     setIsLoading(true)
-    const { name, price, picture } = data
-    await handleCreateProduct({name, price, picture})
+    const { name, price } = data
+    await handleCreateProduct({name, price, image})
     setModalVisible(false)
   }
 
   return (
     <>
-      <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>
+      <Modal isOpen={modalVisible} onClose={handleCloseModal}>
         <Modal.Content>
           <Modal.CloseButton />
           <Modal.Header>Criar novo produto</Modal.Header>
@@ -61,36 +83,22 @@ export function CreateProductForm() {
             </FormControl>
             <FormControl isRequired>
               <FormControl.Label>Foto</FormControl.Label>
-              <Controller
-                control={control}
-                name="picture"
-                rules={{
-                  required: true,
-                  minLength: 5,
-                }}
-                render={({ field: { value, onChange } }) => (
-                  <Input InputLeftElement={<Icon as={<AntDesign name="picture" />} size={6} ml="2" />} fontSize="md" value={value} onChangeText={onChange} name="picture" />
-                )}
-              />
+              <Button onPress={pickImage} bg="#6E1821">{!image ? "Selecione uma imagem" : "Imagem selecionada"}</Button>
             </FormControl>
           </Modal.Body>
           <Modal.Footer>
             <Button.Group space={2}>
-              <Button variant="ghost" colorScheme="blueGray" onPress={() => { setModalVisible(false) }}>
+              <Button variant="ghost" colorScheme="blueGray" onPress={handleCloseModal}>
                 Cancelar
               </Button>
-              <Button bg="#6E1821" isLoading={isLoading} onPress={handleSubmit(onSubmit)}>
+              <Button size="md" bg="#6E1821" isLoading={isLoading} onPress={handleSubmit(onSubmit)}>
                 Criar
               </Button>
             </Button.Group>
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-      <Flex position="relative" h="65%" justify="flex-end" align="center">
-        <Button position="absolute" bg="#242424" w="40%" borderRadius="5px" onPress={() => { setModalVisible(!modalVisible); }}>
-          Novo produto
-        </Button>
-      </Flex>
+      
     </>
   )
 }
