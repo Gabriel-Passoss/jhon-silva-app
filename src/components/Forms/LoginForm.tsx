@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { AuthContext } from '../../contexts/authContext'
+import { AuthContext } from '../../contexts/AuthContext'
 import { useForm, Controller } from 'react-hook-form'
 import { FormControl, Input, Button, Icon, VStack, Text, Alert, Box, Flex, HStack, IconButton } from 'native-base'
 

@@ -42,6 +42,7 @@
     "react-native-svg": "12.1.1",
     "react-native-web": "0.17.1",
     "toastify-react-native": "^2.0.0",
+    "uuidv4": "^6.2.13",
     "yup": "^0.32.11"
   },
   "devDependencies": {

@@ -119,34 +119,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setIsLoading(false)
       console.log(error.code)
     })
-    // setPersistence(auth, browserLocalPersistence).then(async () => {
-    //   return await signInWithEmailAndPassword(auth, email, password).then((user) => {
-    //     get(child(dbRef, `users/${user.user.uid}`)).then(async (snapshot) => {
-    //       if (snapshot.exists()) {
-    //         setUser(snapshot.val())
-    //       } else {
-    //         console.log("Sem dados disponíveis")
-    //       }
-    //     })
-    //     setIsLoading(true)
-    //   }).catch((error) => {
-    //     if (error.code === "auth/wrong-password") {
-    //       setError("Senha incorreta, tente novamente")
-    //     } else if (error.code === "auth/too-many-requests") {
-    //       setError("Muitas tentativas, aguarde 15 segundos")
-    //     } else if (error.code === "auth/missing-email") {
-    //       setError("Email não inserido")
-    //     } else if (error.code === "auth/internal-error") {
-    //       setError("Email/senha não encontrado")
-    //     } else if (error.code === "auth/user-not-found") {
-    //       setError("Usuário não encontrado")
-    //     } else {
-    //       setError("Erro desconhecido")
-    //     }
-    //     setIsLoading(false)
-    //     console.log(error.code)
-    //   })
-    // })
   }
 
   //Deslogar da conta

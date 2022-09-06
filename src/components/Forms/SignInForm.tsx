@@ -2,7 +2,7 @@ import { useContext, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { FormControl, Input, Select, Button, Icon, VStack } from 'native-base'
 
-import { AuthContext } from '../../contexts/authContext'
+import { AuthContext } from '../../contexts/AuthContext'
 import { Ionicons } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';

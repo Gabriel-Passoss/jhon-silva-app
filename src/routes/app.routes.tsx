@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { AuthContext } from '../contexts/authContext';
+import { AuthContext } from '../contexts/AuthContext';
 import { Login } from '../pages/Login'
 import { Register } from '../pages/Register'
 import { Barber } from '../pages/Barber';
