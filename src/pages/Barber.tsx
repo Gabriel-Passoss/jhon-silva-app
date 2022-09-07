@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { Box, Flex, VStack, HStack, Text, Button, Image } from 'native-base'
+import { Box, Flex, VStack, HStack, Text, Button, Image, ScrollView } from 'native-base'
 
 import { ProductsContext } from "../contexts/ProductsContext";
 import { AuthContext } from '../contexts/AuthContext'
@@ -8,6 +8,7 @@ import { ProductCard } from '../components/ProductCard'
 export function Barber() {
   const { handleSignOutUser } = useContext(AuthContext)
   const { products } = useContext(ProductsContext)
+  console.log(products)
 
   return (
     <Flex bg="#6E1821" h="100%">
@@ -22,13 +23,16 @@ export function Barber() {
         <Text fontSize="2xl" color="coolGray.100">Faça seu pedido</Text>
       </Flex>
 
-      <Flex align="center">
-        {products.map((product: any) => {
-          return (
-            <ProductCard image={product.imageURL} name={product.name} price={product.price} key={product.id} />
-          )})
-        }
-      </Flex>
+      <ScrollView>
+        <Flex align="center">
+          {products.map((product: any) => {
+            return (
+              <ProductCard image={product.imageURL} name={product.name} price={product.price} key={product.id} />
+            )
+          })
+          }
+        </Flex>
+      </ScrollView>
     </Flex>
   )
 }

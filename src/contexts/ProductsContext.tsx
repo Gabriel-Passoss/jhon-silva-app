@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react"
-import { ref as dbRef, child, get, set, getDatabase } from "firebase/database";
-import { getStorage, ref, uploadString, getDownloadURL, uploadBytes } from "firebase/storage";
-import { doc, setDoc, addDoc, collection, getDocs } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import { doc, setDoc, addDoc, collection, getDocs, onSnapshot, query, QuerySnapshot } from "firebase/firestore";
 import { v4 as uuid } from 'uuid'
 
 import { database, storage, db } from '../services/firebase';
@@ -37,7 +36,18 @@ export function ProductsProvider({ children }: AuthProviderProps) {
   const productsCollectionRef = collection(db, "products")
 
   useEffect(() => {
-    getProductsData()
+    setIsLoadingData(true)
+
+    const subscribe = onSnapshot(productsCollectionRef, (querySnapshot) => {
+      const products = []
+      querySnapshot.forEach((doc) => {
+        products.push(doc.data())
+      })
+      setProducts(products)
+    });
+
+    setIsLoading(false)
+    return () => subscribe()
   }, [])
 
   async function handleCreateProduct({ name, price, image }: Product) {
@@ -61,12 +71,7 @@ export function ProductsProvider({ children }: AuthProviderProps) {
   }
 
   async function getProductsData() {
-    setIsLoadingData(true)
-
-    const data = await getDocs(productsCollectionRef);
-    setProducts((data.docs.map((doc) => ({...doc.data()}))))
-
-    setIsLoading(false)
+    
   }
 
   return (
