@@ -1,5 +1,6 @@
 import { createContext, useState, ReactNode, useEffect } from 'react'
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, signOut, browserLocalPersistence, inMemoryPersistence, onAuthStateChanged } from "firebase/auth";
+import { doc, setDoc, addDoc, collection, getDocs, onSnapshot, query, QuerySnapshot } from "firebase/firestore";
 import { ref, child, get, set } from "firebase/database";
 import { database } from '../services/firebase';
 

@@ -26,6 +26,6 @@ const auth = initializeAuth(app, {
 })
 const database = getDatabase(app)
 const storage = getStorage(app);
-const db = getFirestore(app)
+const firestore = getFirestore(app)
 
-export { auth, database, storage, db }
+export { auth, database, storage, firestore }

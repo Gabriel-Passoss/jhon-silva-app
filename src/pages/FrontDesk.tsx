@@ -1,10 +1,12 @@
 import { useContext } from 'react'
-import { Flex, VStack, HStack, Text, Button, Image, ScrollView} from 'native-base'
+import { Flex, HStack, Text, Button, Image, ScrollView, Icon} from 'native-base'
 
 import { OrdersCard } from '../components/OrdersCard'
 import { AuthContext } from '../contexts/AuthContext'
 import { ProductsContext } from '../contexts/ProductsContext'
 import { CreateProductForm } from '../components/Forms/CreateProductForm'
+
+import { AntDesign } from '@expo/vector-icons';
 
 export function FrontDesk() {
   const { modalVisible, setModalVisible } = useContext(ProductsContext)
@@ -17,7 +19,10 @@ export function FrontDesk() {
         <Button bg="gray.800" h="40px" w="80px" onPress={handleSignOutUser}>
           Sair
         </Button>
-        <Image source={require('../../assets/logo-img.jpg')} alt="jhon silva logo"/>
+        <Image source={require('../../assets/logo-img.png')} h="150px" w="150px" alt="jhon silva logo"/>
+        <Button bg="#242424" size="lg" borderRadius="5px" onPress={() => { setModalVisible(!modalVisible); }}>
+          <Icon as={<AntDesign name="plus"/>} size={4} color="white"/>
+        </Button>
       </HStack>
       <Flex bg="#242424" h="10%" align="center" justify="center">
         <Text fontSize="2xl" color="coolGray.100">Lista de pedidos</Text>
@@ -35,11 +40,6 @@ export function FrontDesk() {
       </ScrollView>
 
       <CreateProductForm />
-      <Flex position="relative" h="20%" justify="flex-end" align="center" mb="15px">
-        <Button position="absolute" bg="#242424" w="40%" borderRadius="5px" onPress={() => { setModalVisible(!modalVisible); }}>
-          Novo produto
-        </Button>
-      </Flex>
     </Flex>
   )
 }

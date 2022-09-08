@@ -1,9 +1,9 @@
 import { createContext, ReactNode, useEffect, useState } from "react"
-import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
-import { doc, setDoc, addDoc, collection, getDocs, onSnapshot, query, QuerySnapshot } from "firebase/firestore";
+import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import { addDoc, collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { v4 as uuid } from 'uuid'
 
-import { database, storage, db } from '../services/firebase';
+import { storage, firestore } from '../services/firebase';
 
 type AuthProviderProps = {
   children: ReactNode
@@ -43,8 +43,11 @@ export function ProductsProvider({ children }: AuthProviderProps) {
   const [products, setProducts] = useState([])
   const [orders, setOrders] = useState([])
 
-  const productsCollectionRef = collection(db, "products")
-  const ordersCollectionRef = collection(db, "orders")
+  const productsCollectionRef = collection(firestore, "products")
+  const productsQuery = query(productsCollectionRef, orderBy("name"))
+  
+  const ordersCollectionRef = collection(firestore, "orders")
+  const ordersQuery = query(ordersCollectionRef, orderBy("date", "desc"))
 
   useEffect(() => {
     const productsData = onSnapshot(productsCollectionRef, (querySnapshot) => {
@@ -54,7 +57,7 @@ export function ProductsProvider({ children }: AuthProviderProps) {
       })
       setProducts(products)
     })
-    const ordersData = onSnapshot(ordersCollectionRef, (querySnapshot) => {
+    const ordersData = onSnapshot(ordersQuery, (querySnapshot) => {
       const orders = []
       querySnapshot.forEach((doc) => {
         orders.push(doc.data())
@@ -71,7 +74,7 @@ export function ProductsProvider({ children }: AuthProviderProps) {
       const blob = await response.blob()
       await uploadBytes(storageRef, blob).then(async () => {
         await getDownloadURL(storageRef).then((url) => {
-          addDoc(collection(db, "products"), {
+          addDoc(collection(firestore, "products"), {
             id: uuid(),
             name,
             price,
@@ -86,7 +89,7 @@ export function ProductsProvider({ children }: AuthProviderProps) {
 
   async function sendOrder({product, price, image, amount, barber}) {
     
-    await addDoc(collection(db, "orders"), {
+    await addDoc(collection(firestore, "orders"), {
       product,
       barber,
       price,

@@ -14,8 +14,6 @@ type ProductOrderProps = {
 
 export function OrdersCard({image, product, price, amount, barber}: ProductOrderProps) {
 
-  //const { sendOrder } = useContext(ProductsContext)
-
   return (
     <Flex flexDirection="row" mt="20px" bg="#242424" w="90%" h="150px">
       <Flex justify="center">

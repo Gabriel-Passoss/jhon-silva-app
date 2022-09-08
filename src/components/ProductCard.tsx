@@ -13,12 +13,15 @@ type ProductCardProps = {
 
 export function ProductCard({image, name: product, price}: ProductCardProps) {
   const [amount, setAmount] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
   const { sendOrder } = useContext(ProductsContext)
   const { user } = useContext(AuthContext)
   const barber = user.username
 
-  function handleSend() {
-    sendOrder({product, price, image, amount, barber})
+  async function handleSend() {
+    setIsLoading(true)
+    await sendOrder({product, price, image, amount, barber})
+    setIsLoading(false)
   }
 
 
@@ -43,7 +46,7 @@ export function ProductCard({image, name: product, price}: ProductCardProps) {
         </Flex>
       </Flex>
       <Flex justify="flex-end" mb="10px">
-        <Button size="sm" bg="#6E1821" onPress={handleSend}>
+        <Button size="sm" bg="#6E1821" isLoading={isLoading} onPress={handleSend}>
           Enviar
         </Button>
       </Flex>
