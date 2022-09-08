@@ -1,11 +1,10 @@
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { AuthContext } from '../../contexts/AuthContext'
 import { useForm, Controller } from 'react-hook-form'
-import { FormControl, Input, Button, Icon, VStack, Text, Alert, Box, Flex, HStack, IconButton } from 'native-base'
+import { FormControl, Input, Button, Icon, VStack, Text, Alert, Flex, HStack } from 'native-base'
 
 import { Ionicons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
 
 type FormData = {
   email: string,
@@ -14,7 +13,6 @@ type FormData = {
 
 
 export function LoginForm({ navigation }) {
-  const [ inputHasLetter, setInputHasLetter ] = useState(false)
   const { handleLogIn, error, isLoading, setIsLoading } = useContext(AuthContext)
   const { control, handleSubmit } = useForm<FormData>()
 
@@ -59,7 +57,7 @@ export function LoginForm({ navigation }) {
         </FormControl>
 
         <VStack alignItems="center" justifyContent="center" space={2}>
-          <Button w="100%" mt="10px" fontSize="md" backgroundColor="#6E1821" disabled={inputHasLetter} isLoading={isLoading} onPress={handleSubmit(onSubmit)}>
+          <Button w="100%" mt="10px" fontSize="md" backgroundColor="#6E1821" isLoading={isLoading} onPress={handleSubmit(onSubmit)}>
             Entrar
           </Button>
           <Text>Ou</Text>

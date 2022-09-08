@@ -1,9 +1,5 @@
-import { useContext, useState } from "react";
-import { Flex, Image, Button, Text, Box, Icon, HStack, Pressable } from "native-base";
-import {format, formatDistanceToNow} from "date-fns"
-
-import { ProductsContext } from "../contexts/ProductsContext";
-import { AntDesign } from '@expo/vector-icons';
+import { Flex, Image, Text, } from "native-base";
+import { formatDistanceToNow } from "date-fns"
 import { ptBR } from "date-fns/locale";
 
 type ProductOrderProps = {
@@ -18,7 +14,6 @@ type ProductOrderProps = {
 export function OrdersCard({ image, product, price, amount, barber, date }: ProductOrderProps) {
   const newDate = Number(date)
   const dateToNumber = new Date(newDate * 1000)
-  console.log(dateToNumber)
 
   const OrderDateRelativeNow = formatDistanceToNow(dateToNumber, {
     locale: ptBR,

@@ -12,7 +12,6 @@ export function FrontDesk() {
   const { modalVisible, setModalVisible } = useContext(ProductsContext)
   const { handleSignOutUser } = useContext(AuthContext)
   const { orders } = useContext(ProductsContext)
-  console.log(orders)
 
   return (
     <Flex bg="#6E1821" h="100%">

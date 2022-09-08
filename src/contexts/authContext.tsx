@@ -1,8 +1,8 @@
 import { createContext, useState, ReactNode, useEffect } from 'react'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, signOut, browserLocalPersistence, inMemoryPersistence, onAuthStateChanged } from "firebase/auth";
-import { doc, setDoc, addDoc, collection, getDocs, onSnapshot, query, QuerySnapshot } from "firebase/firestore";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 import { ref, child, get, set } from "firebase/database";
-import { database } from '../services/firebase';
+import { database, storage } from '../services/firebase';
+import { uploadBytes, ref as storageRef, getDownloadURL } from 'firebase/storage';
 
 type User = {
   name: string,
@@ -23,10 +23,16 @@ type LoginCredentials = {
   password: string,
 }
 
+type ChangeAvatarCredentials = {
+  currentUser: string,
+  image: string
+}
+
 type AuthContextData = {
   handleSignIn(credentials: SignInCredentials): Promise<void>,
   handleLogIn(credentials: LoginCredentials): Promise<void>,
   handleSignOutUser(): any,
+  handleChangeAvatar(credentials: ChangeAvatarCredentials): any,
   isAuthenticated: boolean,
   isLoading: boolean,
   setIsLoading: any,
@@ -132,8 +138,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
     })
   }
 
+  async function handleChangeAvatar({ currentUser, image }) {
+    const Ref = storageRef(storage, currentUser)
+    const uploadImage = async (image) => {
+      const response = await fetch(image)
+      const blob = await response.blob()
+      await uploadBytes(Ref, blob).then(async () => {
+        await getDownloadURL(Ref).then((url) => {
+          console.log(url)
+        })
+      })
+    }
+    uploadImage(image)
+    setIsLoading(false)
+  }
+
   return (
-    <AuthContext.Provider value={{ handleSignIn, handleLogIn, handleSignOutUser, user, isAuthenticated, isLoading, setIsLoading, error }}>
+    <AuthContext.Provider value={{ handleSignIn, handleLogIn, handleSignOutUser, handleChangeAvatar, user, isAuthenticated, isLoading, setIsLoading, error }}>
       {children}
     </AuthContext.Provider>
   )

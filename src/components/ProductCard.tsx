@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Flex, Image, Button, Text, Box, Icon, HStack } from "native-base";
+import { Flex, Image, Button, Text, Icon, HStack } from "native-base";
 
 import { AuthContext } from "../contexts/AuthContext";
 import { ProductsContext } from "../contexts/ProductsContext";

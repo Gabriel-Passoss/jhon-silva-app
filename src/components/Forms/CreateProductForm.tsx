@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useForm, Controller } from 'react-hook-form'
 import * as ImagePicker from 'expo-image-picker';
-import { Button, Flex, FormControl, Icon, Input, Modal } from "native-base";
+import { Button, FormControl, Icon, Input, Modal } from "native-base";
 
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
