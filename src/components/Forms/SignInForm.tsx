@@ -74,9 +74,9 @@ export function SignInForm() {
         />
       </FormControl>
 
-      <Select mt="5px" selectedValue={service} accessibilityLabel="Selecione o tipo da conta" placeholder="Selecione o tipo" onValueChange={selected => setService(selected)} _selectedItem={{
-        bg: "teal.600",
-        endIcon: <Icon as={<AntDesign name="down" />} />
+      <Select fontSize="sm" mt="5px" selectedValue={service} accessibilityLabel="Selecione o tipo da conta" placeholder="Selecione o tipo" onValueChange={selected => setService(selected)} _selectedItem={{
+        bg: "#96222e",
+        endIcon: <Icon as={<AntDesign name="check" />} />
       }}>
         <Select.Item label="Barbeiro" value="barber"/>
         <Select.Item label="Recepção" value="front-desk"/>
