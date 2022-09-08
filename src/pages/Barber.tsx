@@ -1,5 +1,5 @@
-import { useContext, useState } from 'react'
-import { Box, Flex, VStack, HStack, Text, Button, Image, ScrollView } from 'native-base'
+import { useContext } from 'react'
+import {Flex, HStack, Text, Button, Image, ScrollView } from 'native-base'
 
 import { ProductsContext } from "../contexts/ProductsContext";
 import { AuthContext } from '../contexts/AuthContext'
@@ -8,7 +8,6 @@ import { ProductCard } from '../components/ProductCard'
 export function Barber() {
   const { handleSignOutUser } = useContext(AuthContext)
   const { products } = useContext(ProductsContext)
-  console.log(products)
 
   return (
     <Flex bg="#6E1821" h="100%">
@@ -16,7 +15,7 @@ export function Barber() {
         <Button bg="gray.800" h="40px" w="80px" onPress={handleSignOutUser}>
           Sair
         </Button>
-        <Image source={require('../../assets/logo-img.jpg')} alt="jhon silva logo" />
+        <Image source={require('../../assets/logo-img.png')} h="150px" w="150px" alt="jhon silva logo" />
         <Image borderRadius="full" size="sm" bg="red.800" source={{ uri: "https://cdn.discordapp.com/attachments/668834854376439844/1015475036909486090/vini.jpg" }} alt="profile photo" />
       </HStack>
       <Flex bg="#242424" h="10%" align="center" justify="center">

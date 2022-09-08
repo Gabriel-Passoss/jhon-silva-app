@@ -11,12 +11,13 @@ type AuthProviderProps = {
 
 type ProductsContextData = {
   handleCreateProduct(credentials: Product): Promise<void>,
+  sendOrder(credentials: ProductOrder): Promise<void>
   isLoading: boolean,
-  isLoadingData: boolean,
   modalVisible: boolean,
   setIsLoading: any,
   setModalVisible: any,
   products: any
+  orders: any
 }
 
 type Product = {
@@ -25,29 +26,42 @@ type Product = {
   image: string
 }
 
+type ProductOrder = {
+  product: string,
+  price: string,
+  image: string,
+  amount: number,
+  barber: string
+}
+
 export const ProductsContext = createContext({} as ProductsContextData)
 
 export function ProductsProvider({ children }: AuthProviderProps) {
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
+  
   const [products, setProducts] = useState([])
-  const [isLoadingData, setIsLoadingData] = useState(false)
+  const [orders, setOrders] = useState([])
 
   const productsCollectionRef = collection(db, "products")
+  const ordersCollectionRef = collection(db, "orders")
 
   useEffect(() => {
-    setIsLoadingData(true)
-
-    const subscribe = onSnapshot(productsCollectionRef, (querySnapshot) => {
+    const productsData = onSnapshot(productsCollectionRef, (querySnapshot) => {
       const products = []
       querySnapshot.forEach((doc) => {
         products.push(doc.data())
       })
       setProducts(products)
+    })
+    const ordersData = onSnapshot(ordersCollectionRef, (querySnapshot) => {
+      const orders = []
+      querySnapshot.forEach((doc) => {
+        orders.push(doc.data())
+      })
+      setOrders(orders)
     });
-
-    setIsLoading(false)
-    return () => subscribe()
+    return () => {productsData(), ordersData()}
   }, [])
 
   async function handleCreateProduct({ name, price, image }: Product) {
@@ -70,12 +84,20 @@ export function ProductsProvider({ children }: AuthProviderProps) {
     setIsLoading(false)
   }
 
-  async function getProductsData() {
+  async function sendOrder({product, price, image, amount, barber}) {
     
+    await addDoc(collection(db, "orders"), {
+      product,
+      barber,
+      price,
+      image,
+      amount,
+      date: new Date()
+    })
   }
 
   return (
-    <ProductsContext.Provider value={{ isLoading, setIsLoading, modalVisible, setModalVisible, handleCreateProduct, products, isLoadingData }}>
+    <ProductsContext.Provider value={{ isLoading, setIsLoading, modalVisible, setModalVisible, products, orders, handleCreateProduct, sendOrder }}>
       {children}
     </ProductsContext.Provider>
   )

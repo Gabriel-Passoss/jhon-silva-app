@@ -9,9 +9,9 @@ export function Login({navigation}) {
     <>
       <StatusBar style="dark"/>
       <Flex alignItems="center" justifyContent="center" h="100%">
-        <Image source={require('../../assets/logo-img.jpg')} alt="Jhon-Silva logor" borderRadius="xl" />
+        <Image source={require('../../assets/logo-img.png')} h="250px" w="250px" alt="Jhon-Silva logor" borderRadius="xl" />
         <Flex alignItems="center" width="100%">
-          <Box p="2" my="8" w="90%" maxW="290">
+          <Box p="2" w="90%" maxW="290">
             <Heading textAlign="center" size="lg" fontWeight="600" color="coolGray.800" _dark={{
               color: "warmGray.50"
             }}>
