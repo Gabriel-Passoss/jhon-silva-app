@@ -12,6 +12,7 @@ export function FrontDesk() {
   const { modalVisible, setModalVisible } = useContext(ProductsContext)
   const { handleSignOutUser } = useContext(AuthContext)
   const { orders } = useContext(ProductsContext)
+  console.log(orders)
 
   return (
     <Flex bg="#6E1821" h="100%">
@@ -32,7 +33,7 @@ export function FrontDesk() {
         <Flex align="center">
           {orders.map((orders: any, index: number) => {
             return (
-              <OrdersCard image={orders.image} product={orders.product} price={orders.price} amount={orders.amount} barber={orders.barber} key={index} />
+              <OrdersCard image={orders.image} product={orders.product} price={orders.price} amount={orders.amount} barber={orders.barber} date={orders.date.seconds} key={index} />
             )
           })
           }

@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react"
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
-import { addDoc, collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, orderBy, query, doc, updateDoc, where, Timestamp, serverTimestamp,  } from "firebase/firestore";
 import { v4 as uuid } from 'uuid'
 
 import { storage, firestore } from '../services/firebase';
@@ -31,20 +31,19 @@ type ProductOrder = {
   price: string,
   image: string,
   amount: number,
-  barber: string
+  barber: string,
 }
 
 export const ProductsContext = createContext({} as ProductsContextData)
 
 export function ProductsProvider({ children }: AuthProviderProps) {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false)
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   
-  const [products, setProducts] = useState([])
-  const [orders, setOrders] = useState([])
+  const [products, setProducts] = useState<Product[]>([])
+  const [orders, setOrders] = useState<ProductOrder[]>([])
 
   const productsCollectionRef = collection(firestore, "products")
-  const productsQuery = query(productsCollectionRef, orderBy("name"))
   
   const ordersCollectionRef = collection(firestore, "orders")
   const ordersQuery = query(ordersCollectionRef, orderBy("date", "desc"))
@@ -88,14 +87,13 @@ export function ProductsProvider({ children }: AuthProviderProps) {
   }
 
   async function sendOrder({product, price, image, amount, barber}) {
-    
     await addDoc(collection(firestore, "orders"), {
       product,
       barber,
       price,
       image,
       amount,
-      date: new Date()
+      date: serverTimestamp()
     })
   }
 

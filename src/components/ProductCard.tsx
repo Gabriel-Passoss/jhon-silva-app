@@ -24,14 +24,13 @@ export function ProductCard({image, name: product, price}: ProductCardProps) {
     setIsLoading(false)
   }
 
-
   return (
     <Flex flexDirection="row" mt="20px" bg="#242424" w="90%" h="150px">
       <Flex justify="center">
         <Image source={{uri: `${image}`}} alt="product-image" h="100px" w="100px" ml="20px" />
       </Flex>
-      <Flex mt="25px" ml="20px" w="40%">
-        <Text fontSize="lg" color="light.200">{product}</Text>
+      <Flex mt="25px" ml="20px" w="35%">
+        <Text fontSize="md" color="light.200">{product}</Text>
         <Text fontSize="sm" color="light.200" mt="5px">R${price}</Text>
         <Flex flexDirection="row" align="center">
           <HStack space={2}>
@@ -45,7 +44,7 @@ export function ProductCard({image, name: product, price}: ProductCardProps) {
           </HStack>
         </Flex>
       </Flex>
-      <Flex justify="flex-end" mb="10px">
+      <Flex justify="flex-end" align="center" ml="7px" mb="10px">
         <Button size="sm" bg="#6E1821" isLoading={isLoading} onPress={handleSend}>
           Enviar
         </Button>

@@ -60,6 +60,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         await get(child(dbRef, `users/${user.uid}`)).then(async (snapshot) => {
           if (snapshot.exists()) {
             setUser(snapshot.val())
+            
           } else {
             console.log("Sem dados disponíveis")
           }
