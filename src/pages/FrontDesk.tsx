@@ -7,6 +7,7 @@ import { ProductsContext } from '../contexts/ProductsContext'
 import { CreateProductForm } from '../components/Forms/CreateProductForm'
 
 import { AntDesign } from '@expo/vector-icons';
+import { SimpleLineIcons } from '@expo/vector-icons';
 
 export function FrontDesk() {
   const { modalVisible, setModalVisible } = useContext(ProductsContext)
@@ -16,8 +17,8 @@ export function FrontDesk() {
   return (
     <Flex bg="#6E1821" h="100%">
       <HStack h="15%" justifyContent="center" alignItems="center" space={5}  mt="25px">
-        <Button bg="gray.800" h="40px" w="80px" onPress={handleSignOutUser}>
-          Sair
+        <Button bg="gray.800" h="35px" w="50px" onPress={handleSignOutUser}>
+          <Icon as={<SimpleLineIcons name="logout" />} size={4} color="white" />
         </Button>
         <Image source={require('../../assets/logo-img.png')} h="150px" w="150px" alt="jhon silva logo"/>
         <Button bg="#242424" size="lg" borderRadius="5px" onPress={() => { setModalVisible(!modalVisible); }}>

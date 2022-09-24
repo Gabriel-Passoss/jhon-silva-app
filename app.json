@@ -10,6 +10,11 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "platforms": [
+      "android",
+      "ios",
+      "web"
+    ],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
